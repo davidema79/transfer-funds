@@ -1,0 +1,118 @@
+server:
+  rootPath: /api/
+  applicationConnectors:
+    - type: http
+      port: 0
+
+database:
+  driverClass: org.apache.derby.jdbc.EmbeddedDriver
+  url: jdbc:derby:memory:funds;create=true
+  properties:
+    charSet: UTF-8
+    hibernate.dialect: org.hibernate.dialect.DerbyTenSevenDialect
+    hibernate.show_sql: true
+    hibernate.generate_statistics: false
+    hibernate.hbm2ddl.auto: none # the schema is created by Flyway in a latter stage
+    hibernate.use-new-id-generator-mappings: true
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* Payment Platform Health Check */ values 1 "
+
+  logValidationErrors: true
+
+  # the timeout before a connection validation queries fail
+  validationQueryTimeout: 3s
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: true
+
+  # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+
+  # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+  minIdleTime: 1 minute
+  checkConnectionOnBorrow: true
+  checkConnectionOnConnect: true
+  logAbandonedConnections: true
+
+flyway:
+  # The encoding of SQL migrations. (default: UTF-8)
+  encoding: UTF-8
+
+  # Locations to scan recursively for migrations. (default: db/migration)
+  locations:
+    - db/migration
+
+  # The description to tag an existing schema with when executing baseline. (default: << Flyway Baseline >>)
+  baselineDescription: "<< Flyway Baseline >>"
+
+  # Whether to automatically call baseline when migrate is executed against a non-empty schema with no metadata table. (default: false)
+  # Be careful when enabling this as it removes the safety net that ensures Flyway does not migrate the wrong database in case of a configuration mistake!
+  baselineOnMigrate: true
+
+  # Whether to automatically call validate or not when running migrate. (default: true)
+  validateOnMigrate: true
+
+  # The version to tag an existing schema with when executing baseline. (default: 1)
+  baseLineVersion: 1
+
+  # Whether to disabled clean. (default: false)
+  # This is especially useful for production environments where running clean can be quite a career limiting move.
+  cleanDisabled: false
+
+  # Whether to group all pending migrations together in the same transaction when applying them
+  # (only recommended for databases with support for DDL transactions).
+  # true if migrations should be grouped. false if they should be applied individually instead. (default: false)
+  group: false
+
+  # Ignore future migrations when reading the schema history table. These are migrations that were performed by a
+  # newer deployment of the application that are not yet available in this version.
+  # true to continue normally and log a warning, false to fail fast with an exception. (default: true)
+  ignoreFutureMigrations: true
+
+  # Ignore ignored migrations when reading the schema history table. These are migrations that were added in between
+  # already migrated migrations in this version.
+  # true to continue normally, false to fail fast with an exception. (default: false)
+  ignoreIgnoredMigrations: false
+
+  # Ignore missing migrations when reading the schema history table. These are migrations that were performed by an
+  # older deployment of the application that are no longer available in this version.
+  # true to continue normally and log a warning, false to fail fast with an exception. (default: false)
+  ignoreMissingMigrations: false
+
+  # Whether to allow mixing transactional and non-transactional statements within the same migration.
+  # true if mixed migrations should be allowed. false if an error should be thrown instead. (default: false)
+  mixed: false
+
+  # Whether placeholders should be replaced. (default: true)
+  placeholderReplacement: true
+
+  # If set to true, default built-in callbacks (sql) are skipped and only custom callback as
+  # defined by 'callbacks' are used. (default: false)
+  skipDefaultCallbacks: false
+
+  # If set to true, default built-in resolvers (jdbc, spring-jdbc and sql) are skipped and only custom resolvers as
+  # defined by 'resolvers' are used. (default: false)
+  skipDefaultResolvers: false
+
+# Logging settings.
+logging:
+  level: INFO
+  appenders:
+    - type: console
+    - type: file
+      currentLogFilename: './logs/application.log'
+      archivedLogFilenamePattern: './logs/application-%d-%i.log.gz'
+      archive: true
+      archivedFileCount: 7
+      maxFileSize: '1MiB'
+
