@@ -46,6 +46,7 @@ public class FundsTransferApplication extends Application<ApplicationConfig> {
     public void initialize(final Bootstrap<ApplicationConfig> bootstrap) {
         bootstrap.addBundle(DatabaseBundles.HIBERNATE_BUNDLE);
 
+        LOGGER.info("Scanning the package to find all the needed Beans, including the resources in Jersey.");
         bootstrap.addBundle(GuiceBundle.builder()
                 .enableAutoConfig(FundsTransferApplication.class.getPackage().getName())
                 .modules(DatabaseModule.getInstance())
@@ -55,18 +56,15 @@ public class FundsTransferApplication extends Application<ApplicationConfig> {
 
     @Override
     public void run(final ApplicationConfig applicationConfig, final Environment environment) throws Exception {
-        LOGGER.debug("Database initialisation");
+        LOGGER.info("Database initialisation");
         final ManagedDataSource dataSource = applicationConfig.getDataSourceFactory().build(environment.metrics(), "flyway-migration");
         final Flyway flyway = applicationConfig.getFlywayFactory().build(dataSource);
         flyway.migrate();
 
-        LOGGER.debug("Registration: healthCheck");
+        LOGGER.info("Registration: healthCheck");
         environment.healthChecks().register("simpleHealthCheck", new HealthCheckFundsTransfer());
 
 
-        LOGGER.debug("Registration of the resources in Jersey.");
-        environment.jersey().register(new StatusRestResource());
-        environment.jersey().register(new AccountRestResource());
-        environment.jersey().register(new CustomerRestResource());
+
     }
 }

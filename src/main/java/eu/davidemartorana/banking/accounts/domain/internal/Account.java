@@ -25,7 +25,7 @@ public class Account {
     @Id
     @Column(name = "id", nullable = false)
     @JsonIgnore
-    private Integer id;
+    private Long id;
 
     @Column(name = "iban_number", nullable = false)
     @NotNull
@@ -55,11 +55,11 @@ public class Account {
     @JsonIgnore
     private Integer customerId;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

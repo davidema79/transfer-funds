@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "8de69b2a-3a52-4ae2-a281-909de5ab89c6",
+		"name": "Transfer Funds",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Customers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/customers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Customer Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/customers/52bc1e5d-af14-4fa0-8641-a1a3622e69e1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						"52bc1e5d-af14-4fa0-8641-a1a3622e69e1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Account By Customer UUID f88ea81b-e6a9-42e9-ac7a-c52bff551060/accounts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/customers/f88ea81b-e6a9-42e9-ac7a-c52bff551060/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						"f88ea81b-e6a9-42e9-ac7a-c52bff551060",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Transaction By Account UUID df550c7b-f108-412c-a83a-8e310e83fadc/transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/accounts/df550c7b-f108-412c-a83a-8e310e83fadc/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"df550c7b-f108-412c-a83a-8e310e83fadc",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Account Detail By UUID df550c7b-f108-412c-a83a-8e310e83fadc",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/accounts/df550c7b-f108-412c-a83a-8e310e83fadc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"df550c7b-f108-412c-a83a-8e310e83fadc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Transfer Funds from Account 7f9adf98-93fb-4868-8cd8-cfe0f53628c1 to 85216e45-8dd1-41d7-a890-3cf71acd2630",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"amount\":{\n\t\t\"value\": 100.00,\n\t\t\"currency\": \"GBP\"\n\t},\n\t\"beneficiaryAccountId\": \"85216e45-8dd1-41d7-a890-3cf71acd2630\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/accounts/7f9adf98-93fb-4868-8cd8-cfe0f53628c1/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"7f9adf98-93fb-4868-8cd8-cfe0f53628c1",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET API Identifier",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"amount\":{\n\t\t\"value\": 100.00,\n\t\t\"currency\": \"GBP\"\n\t},\n\t\"beneficiaryAccountId\": \"85216e45-8dd1-41d7-a890-3cf71acd2630\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/identifier",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"identifier"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

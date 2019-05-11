@@ -4,6 +4,7 @@ import eu.davidemartorana.banking.accounts.domain.internal.Account;
 import eu.davidemartorana.banking.accounts.exceptions.FundsNotEnoughException;
 import eu.davidemartorana.banking.accounts.domain.Amount;
 import io.dropwizard.hibernate.AbstractDAO;
+import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ public class AccountRepository extends AbstractDAO<Account> {
     @Inject
     public AccountRepository(SessionFactory sessionFactory) {
         super(sessionFactory);
+        //sessionFactory.getCurrentSession()
     }
 
     public List<Account> findByCustomerId(final Integer customerId){
@@ -49,7 +51,7 @@ public class AccountRepository extends AbstractDAO<Account> {
      *
      * @return an instance of account containing the new values.
      */
-    public Account checkAndDecreaseLockingResourceByAccountId(final Amount amount, final Integer accountId) {
+    public Account checkAndDecreaseLockingResourceByAccountId(final Amount amount, final Long accountId) {
 
         LOGGER.debug("Check the account with id {} and acquires the lock.", accountId);
         final Account account = this.currentSession().find(Account.class, accountId, LockModeType.PESSIMISTIC_WRITE);
@@ -76,7 +78,7 @@ public class AccountRepository extends AbstractDAO<Account> {
      *
      * @return an instance of account containing the new values.
      */
-    public Account checkAndIncreaseLockingResourceByAccountId(final Amount amount, final Integer accountId) {
+    public Account checkAndIncreaseLockingResourceByAccountId(final Amount amount, final Long accountId) {
         final Account account = this.currentSession().find(Account.class, accountId, LockModeType.PESSIMISTIC_WRITE);
 
         final BigDecimal newTotal = account.getTotalAmount().add(amount.getValue());

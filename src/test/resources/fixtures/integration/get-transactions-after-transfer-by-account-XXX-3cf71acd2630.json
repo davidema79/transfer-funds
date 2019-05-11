@@ -1,0 +1,33 @@
+{
+  "transactions": [
+    {
+      "amount": 2500,
+      "currency": "GBP",
+      "dateTime": "2019-02-10T09:14:38 UTC",
+      "type": "CREDIT",
+      "id": "c59c4c27-8894-4479-9ae7-85e677455720"
+    },
+    {
+      "amount": 200,
+      "currency": "GBP",
+      "dateTime": "2019-04-03T09:24:33 UTC",
+      "type": "DEBIT",
+      "id": "4fb9a3a2-a427-4c4f-a5cc-0fca24a9e9c6"
+    },
+    {
+      "amount": 700,
+      "currency": "GBP",
+      "dateTime": "2019-04-24T00:34:52 UTC",
+      "type": "CREDIT",
+      "id": "214cd509-beed-40b1-a9e9-04d0877b394c"
+    },
+    {
+      "amount": 100,
+      "currency": "GBP",
+      "dateTime": "2019-05-10T23:38:42 UTC",
+      "type": "CREDIT",
+      "id": "d4d1d470-6b5c-4eda-b87d-5d6b46a36864"
+    }
+  ],
+  "total": 4
+}

@@ -25,7 +25,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     @JsonIgnore
-    private Integer id;
+    private Long id;
 
     @Column(name = "uuid", nullable = false)
     @NotNull
@@ -56,13 +56,13 @@ public class Transaction {
     @Column(name = "account_id", nullable = false)
     @NotNull
     @JsonIgnore
-    private Integer accountId;
+    private Long accountId;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -107,11 +107,11 @@ public class Transaction {
         this.type = type;
     }
 
-    public Integer getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Integer accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 

@@ -19,6 +19,13 @@ public class Amount {
     @org.hibernate.validator.constraints.Currency("GBP")
     private Currency currency;
 
+    public Amount(){}
+
+    public Amount(BigDecimal value, Currency currency) {
+        this.value = value;
+        this.currency = currency;
+    }
+
     public BigDecimal getValue() {
         return value;
     }

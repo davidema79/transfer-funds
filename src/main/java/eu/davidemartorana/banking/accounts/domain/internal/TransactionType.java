@@ -7,7 +7,7 @@ public enum TransactionType {
 
     private String value;
 
-    private TransactionType(final String value) {
+    TransactionType(final String value) {
         this.value = value;
     }
 

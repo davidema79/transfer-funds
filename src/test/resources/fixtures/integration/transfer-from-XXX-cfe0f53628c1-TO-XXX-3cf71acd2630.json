@@ -1,0 +1,29 @@
+{
+  "debtorAccount": {
+    "ibanNumber": "GB40REVO60161331926819",
+    "totalAmount": 20,
+    "currency": "GBP",
+    "id": "7f9adf98-93fb-4868-8cd8-cfe0f53628c1"
+  },
+  "beneficiaryAccount": {
+    "ibanNumber": "GB40REVO00991232026772",
+    "currency": "GBP",
+    "id": "85216e45-8dd1-41d7-a890-3cf71acd2630"
+  },
+  "transactions": [
+    {
+      "amount": 100,
+      "currency": "GBP",
+      "dateTime": "2019-05-10T23:38:42 UTC",
+      "type": "DEBIT",
+      "id": ""
+    },
+    {
+      "amount": 100,
+      "currency": "GBP",
+      "dateTime": "2019-05-10T23:38:42 UTC",
+      "type": "CREDIT",
+      "id": ""
+    }
+  ]
+}

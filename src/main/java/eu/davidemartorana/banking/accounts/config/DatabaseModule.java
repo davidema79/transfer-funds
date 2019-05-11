@@ -15,9 +15,6 @@ public class DatabaseModule extends AbstractModule {
 
     @Override
     protected void configure() {
-//        super.configure();
         this.bind(SessionFactory.class).toInstance(DatabaseBundles.HIBERNATE_BUNDLE.getSessionFactory());
-//        this.bind(SessionFactory.class).toInstance(DatabaseBundles.HIBERNATE_BUNDLE_.getSessionFactory());
-//        this.bind(SessionFactory.class).toInstance(DatabaseBundles.HIBERNATE_BUNDLE_ACCOUNT.getSessionFactory());
     }
 }

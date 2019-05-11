@@ -11,9 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.persistence.LockTimeoutException;
+import javax.persistence.PessimisticLockException;
+import javax.transaction.TransactionScoped;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -22,36 +26,47 @@ public class AccountsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountsService.class);
 
-    @Inject
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+
+    private final TransactionRepository transactionsRepository;
 
     @Inject
-    private TransactionRepository transactionsRepository;
+    public AccountsService(final AccountRepository accountRepository, final TransactionRepository transactionsRepository) {
+        this.accountRepository = accountRepository;
+        this.transactionsRepository = transactionsRepository;
+    }
 
-    public List<Transaction> getAllTransactionsByAccountsUUID(final String uuid){
-        LOGGER.trace("Retrieving transaction by account id {}", uuid);
-        final Optional<Account> optionalAccount = accountRepository.findByUUID(uuid);
-        final Account account = optionalAccount.orElseThrow(()->new NotFoundException("Account with given id was not found"));
+    public List<Transaction> getAllTransactionsByAccountsUUID(final String uuid) {
+        final Account account = getDetailsByAccountUUID(uuid);
 
         return  transactionsRepository.findByAccountId(account.getId());
     }
 
+    public Account getDetailsByAccountUUID(String accountUUID) {
+        LOGGER.trace("Retrieving account by {}", accountUUID);
+        final Optional<Account> optionalAccount = accountRepository.findByUUID(accountUUID);
+        final Account account = optionalAccount.orElseThrow(()-> new NotFoundException("Account with given id was not found"));
+
+        return  account;
+    }
+
+    @TransactionScoped
     public TransferResult transferAmount(final String debtorAccountUUID , final TransferRequest transferRequest) {
         final Optional<Account> optionalDebtorAccount = accountRepository.findByUUID(debtorAccountUUID);
         final Account debtorAccount = optionalDebtorAccount.orElseThrow(()->new NotFoundException("Debtor Account with given id was not found"));
 
-        final Integer debtorAccountId = debtorAccount.getId();
+        final Long debtorAccountId = debtorAccount.getId();
 
         LOGGER.trace("Validation against the account currency");
         if(!debtorAccount.getCurrency().equals(transferRequest.getAmount().getCurrency())) {
             throw new BadRequestException("The currency accounts must be the same of the transfer instruction.");
         }
 
-        final String beneficiaryUUID = transferRequest.getBeneficiaryAccountId().toString();
+        final String beneficiaryUUID = transferRequest.getBeneficiaryAccountId();
         final Optional<Account> optionalBeneficiaryAccount = accountRepository.findByUUID(beneficiaryUUID);
-        final Account beneficiaryAccount = optionalBeneficiaryAccount.orElseThrow(()-> new BadRequestException("Debtor Account with given id was not found"));
+        final Account beneficiaryAccount = optionalBeneficiaryAccount.orElseThrow(() -> new BadRequestException("Beneficiary Account with given id was not found."));
 
-        final Integer beneficiaryAccountId = beneficiaryAccount.getId();
+        final Long beneficiaryAccountId = beneficiaryAccount.getId();
 
         LOGGER.trace("Validates that both accounts have the same currency");
         if(!debtorAccount.getCurrency().equals(beneficiaryAccount.getCurrency())){
@@ -72,6 +87,9 @@ public class AccountsService {
             creditTransaction = this.transactionsRepository.addTransaction(transferRequest.getAmount(), beneficiaryAccount, TransactionType.CREDIT);
         } catch (final WebApplicationException e) {
             throw e;
+
+        } catch (final PessimisticLockException | LockTimeoutException e) {
+            throw new WebApplicationException("The operation cannot be performed at the present time. Account used by another thread. Please try later.", e, Response.Status.CONFLICT);
         } catch (final RuntimeException e) {
             LOGGER.error("Error during the funds transfer.", e);
             throw new WebApplicationException("Error occurred during the funds transfer. Operation not performed.", e);
@@ -86,14 +104,5 @@ public class AccountsService {
         response.addTransaction(creditTransaction);
 
         return response;
-    }
-
-
-    public Account getDetailsByAccountUUID(String accountUUID) {
-        LOGGER.trace("Retrieving account by {}", accountUUID);
-        final Optional<Account> optionalAccount = accountRepository.findByUUID(accountUUID);
-        final Account account = optionalAccount.orElseThrow(()->new NotFoundException("Account with given id was not found"));
-
-        return  account;
     }
 }

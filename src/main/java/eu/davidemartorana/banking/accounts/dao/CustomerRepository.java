@@ -17,7 +17,8 @@ public class CustomerRepository extends AbstractDAO<Customer> {
     }
 
     public List<Customer> findAll() {
-        return (List<Customer>) currentSession().createCriteria(Customer.class).list();
+
+        return  currentSession().createQuery("SELECT c FROM Customer c", Customer.class).list();
     }
 
     public Optional<Customer> findByUUID(final String uuid) {

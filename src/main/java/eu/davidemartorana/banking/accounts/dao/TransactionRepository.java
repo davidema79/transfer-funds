@@ -21,7 +21,7 @@ public class TransactionRepository  extends AbstractDAO<Transaction> {
         super(sessionFactory);
     }
 
-    public List<Transaction> findByAccountId(Integer id) {
+    public List<Transaction> findByAccountId(Long id) {
         return this.currentSession()
                 .createNamedQuery("transactions.findByAccountId", Transaction.class)
                 .setParameter("accountId", id)
@@ -37,7 +37,7 @@ public class TransactionRepository  extends AbstractDAO<Transaction> {
         transaction.setDateTime(DateTime.now());
         transaction.setUuid(UUID.randomUUID().toString());
 
-        final Integer id = (Integer) this.currentSession().save(transaction);
+        final Long id = (Long) this.currentSession().save(transaction);
 
         return this.currentSession().find(Transaction.class, id);
     }

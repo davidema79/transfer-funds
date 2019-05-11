@@ -1,0 +1,11 @@
+{
+  "accounts": [
+    {
+      "ibanNumber": "GB40REVO00991234567890",
+      "totalAmount": 1000,
+      "currency": "GBP",
+      "id": "df550c7b-f108-412c-a83a-8e310e83fadc"
+    }
+  ],
+  "total": 1
+}
